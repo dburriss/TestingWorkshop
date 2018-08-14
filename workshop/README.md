@@ -5,7 +5,7 @@ Today you will be TDD'ing a shopping cart.
 ## Getting started
 
 1. Clone this repository: `git clone git@github.com:dburriss/TestingWorkshop.git`
-1. In this directory (the *workshop* directory) you will find starter projects for [C#](/csharp/) ,[F#](/fsharp/), and [JS](/js/). Pick which is your preferred language and open it in your favorite editor.
+1. In this directory (the *workshop* directory) you will find starter projects for [C#](csharp/) ,[F#](fsharp/), and [JS](js/). Pick which is your preferred language and open it in your favorite editor.
 
 ## Instructions
 
@@ -18,6 +18,8 @@ Today you will be TDD'ing a shopping cart.
 ## Assignment
 
 Your team has been tasked with creating a new shopping cart experience. As this is a critical section of the website, as a team you have decided to TDD it as you have heard it lowers the occurrences of defects.
+
+*Basic definition of a product model:*
 
 ```
 data Product = {
@@ -51,10 +53,10 @@ Dealing with dependencies. We want visibility on what is happening on the cart. 
 
 Dealing with change. There is an external API that allows you as a developer to POST a list of products to with quantities. You will get back the discounts that apply to the Product Lines as well as those applying to the cart as a whole.
 
+*Definition of Discounts model*
+
 ```
-data ItemDiscount =
-| PercentagePerProduct is percentage
-| PercentagePerProductLine is percentage
+data ItemDiscount = (PercentagePerProduct is percentage) OR (PercentagePerProductLine is percentage)
 
 data ItemDiscountResult = {
     ProductId:unique identifier
