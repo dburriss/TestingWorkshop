@@ -25,6 +25,7 @@ Your team has been tasked with creating a new shopping cart experience. As this 
 data Product = {
     Id:unique identifier
     Code:6 letter alphanumeric
+    Code:text
     Description:text
     Amount:number with decimal
     Version:integer
