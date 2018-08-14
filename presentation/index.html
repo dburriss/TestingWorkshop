@@ -1,0 +1,272 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Automated Testing with TDD and friends</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- START : PREZ INTRODUCTION -->
+				<section>
+					<h2>Automated testing with TDD and friends</h2>
+				</section>
+				
+				<section>
+					<section>Hi! My name is Devon Burriss</section>
+					<section>
+						<p>Born in South Africa</p>
+						<p>Ik woon en werk nu al meer dan 2 jaar in Nederland</p>
+					</section>
+					<section>
+						<p>When coding: FP / DDD / TDD and other acronyms that try improve the way we build software</p>
+						<p>When not coding: Family / Meditation / Reading / Coffee</p>
+					</section>
+				</section>
+
+				<section>
+					<h2>Agenda</h2>
+					<ul>
+						<li>Introduction to automated testing</li>
+						<ul>
+							<li>Why?</li>
+							<li>Types of tests</li>
+						</ul>
+						<li>Zoom in on BDD and TDD</li>
+						<ul>
+							<li>What is BDD and TDD?</li>
+							<li>Compare the differences</li>
+						</ul>
+						<li>Writing good Acceptance tests</li>
+						<li>Writing good Unit tests</li>
+						<li>Practice</li>
+					</ul>
+				</section>
+				<!-- END : PREZ INTRODUCTION -->
+
+				<!-- START : INTRODUCTION TO AUTMATION TESTING -->
+				<section><h2>Introduction to automated testing</h2></section>
+				<section>
+					<h3>Why?</h3>
+					<span class="fragment fade-in">Move fast<br/></span>
+					<span class="fragment fade-in">Keep quality up<br/></span>
+					<span class="fragment fade-in">Self document</span>
+				</section>
+
+				<section>
+					<h3>Types of automated tests...</h3>
+				</section>
+				<section>
+					<section>
+						<h4>UI Tests</h4>
+						<img src="assets/ui-testing.jpg" style="height:100%; width:100%;">
+					</section>
+					<section>
+							<h4>Acceptance Tests</h4>
+<pre><code class="gherkin hljs">
+Feature: Eating too many cucumbers may not be good for you
+
+Eating too much of anything may not be good for you.
+
+Scenario: Eating a few is no problem
+	Given Alice is hungry 
+	When she eats 3 cucumbers
+	Then she will be full
+</code></pre>
+						</section>
+						<section>
+							<h4>Integration tests</h4>
+							<img src="assets/integration.jpg" style="height:100%; width:100%;">
+						</section>
+						<section>
+							<h4>Unit tests</h4>
+<pre><code class="fsharp hljs">
+[<Fact>]
+let ``toPay returns half on 50% discounted Price`` () =
+  let price = (Price.create 10m (Discount.fromDecimal 50m)) 
+  	      |> Price.toPay
+  test &lt;@ price = 5m @>
+</code></pre>
+						</section>
+						<section>
+							<h3>Cost</h3>
+							<img src="assets/test-pyramid.jpg" style="height:100%; width:100%;">
+						</section>
+						<section>
+							<h4>Other tests</h4>
+							<ul>
+								<li>Property based tests</li>
+								<li>Consumer contracts</li>
+								<li>Load tests</li>
+							</ul>
+						</section>	
+				</section>
+				<!-- END : INTRODUCTION TO AUTMATION TESTING -->
+
+				<!-- START : TESTING PRACTICES -->
+				<section>
+					<section>
+						<h3>Test-Driven Development</h3>
+						<ul>
+							<li>Test code in isolation</li>
+							<li>Rapid feedback on design</li>
+							<li>Rapid feedback on working code</li>
+							<li>Small incremental steps toward a working system</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Benefits</h4>
+						<ul>
+							<li>Productivity</li>
+							<li>Less defects</li>
+							<li>Can improve design</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Common Criticisms</h4>
+						<ul>
+							<li>Doubles development time</li>
+							<li>More code to maintain</li>
+							<li>Tests need to change whenever production code changes</li>
+							<li>Test induced damage of the design</li>
+						</ul>
+					</section>
+					<section>
+						<h3>TDD lifecycle</h3>
+						<img src="assets/TDD_Global_Lifecycle.png" style="height:100%; width:100%;">
+						<span>
+							By Xarawn [CC BY-SA 4.0  (https://creativecommons.org/licenses/by-sa/4.0)], from Wikimedia Commons
+						</span>
+					</section>
+					<section>
+						<h4>Red / Green / Refactor Loop</h4>
+						<ol>
+							<li>Add a test</li>
+							<li>See it fail (Red)</li>
+							<li>Write the implementation</li>
+							<li>Run the test (Green)</li>
+							<li>Refactor</li>
+						</ol>
+					</section>
+					<section>
+						<h4>Arrange / Act / Assert</h4>
+					</section>
+					<section>
+						<h4>Naming</h4>
+						<code>Unit_Scenario_ExpectedResult</code>
+					</section>
+					
+				</section>
+
+				<section>
+					<section>
+						<h3>Behavior-Driven Development</h3>
+						<blockquote>BDD is a second-generation, outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters. - Dan North</blockquote>
+					</section>
+					<section>
+						<ul>
+							<li>Focus on capturing requirements</li>
+							<li>Foster collaboration</li>
+							<li>Outside-in</li>
+							<li>Delivery of software that adds value</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Tips for writing Acceptance tests</h4>
+						<ul>
+							<li>Discover the scenarios from the users point of view</li>
+							<li>Write the test using the model the user would</li>
+							<li>Be explicit but try not repeat irrelevant information across tests</li>
+							<li>Focus on what matters/changes</li>
+						</ul>
+					</section>
+					<section>
+<pre><code class="gherkin hljs"></code>
+Feature: Fixed Amount Sell-in Purchase Agreement
+
+Background:
+	Given a fixed amount sell-in Purchase agreement
+	| Name      | Value                             |
+	| Starting  | 2017-01-05                        |
+	| Ending    | 2017-02-25                        |
+	| Type      | FixedAmountPerProductPurchased    |
+	| Status    | Approved                          |
+	| Factor    | 10                                |
+	| Product   | P1                                |
+	| Product   | P2                                |
+	| Product   | P3                                |
+</code></pre>
+					</section>
+					<section>
+<pre><code class="gherkin hljs"></code>
+	Scenario: Agreement start date is moved backwards 
+			so more purchase delivery lines are allocated against
+	Given the following purchase delivery lines exist
+	| Purchase Delivery Line Id | Product   | Quantity | Price | Verification date |
+	| PD1                         | P1      | 3        | 100   | 01-01-2017        |
+	| PD2                         | P2      | 6        | 110   | 05-01-2017        |
+	| PD3                         | P3      | 10       | 210   | 05-01-2017        |
+	And existing allocations for the agreement
+	| Purchase Delivery Line Id | Product   | AllocatedValue |
+	| PD2                         | P2      | 60             |
+	| PD3                         | P3      | 100            |
+	When the Purchase agreement start date changes to 2017-01-01
+	And allocations are calculated for the Purchase agreement
+	Then the following purchase delivery lines are allocated against
+	| Purchase Delivery Line Id | Product   | AllocatedValue |
+	| PD1                       | P1        | 30             |
+	And the total allocated value for the Purchase agreement is 190
+</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<!-- <h3>BDD vs. TDD</h3> -->
+					<img src="assets/test-quadrant.jpg" style="height:65%; width:65%;">
+				</section>
+
+				<section>
+					<h3>Note: Type-Driven Development</h3>
+					<p>Used when language's type system is very strong</p>
+					<p>Lots of types</p>
+					<p>Lots of modelling and experimenting</p>
+				</section>
+				<!-- END : TESTING PRACTICES -->
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
