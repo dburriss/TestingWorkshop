@@ -44,10 +44,10 @@ Warming up. Implementing the basic cart functionality.
 
 ### Part 2
 
-Dealing with dependencies. We want visibility on what is happening on the cart. We want any changes to the contents of the cart to be logged.
+Dealing with dependencies. We want visibility on what is happening on the cart. We want any changes to the contents of the cart to be logged. Ise `ILogger` in your cart implementation to send a log when products are added and removed. We also want to be able to see when exceptions occur.
 
-1. Create a logger abstraction to be used
-1. Make sure the logger is called when a product is added, removed, or changes quantity.
+1. As a business analyst I want to be able to scrape the log files to the see what products were added and removed from carts so that I can analyze user behavior.
+1. As a developer I want to know what exceptions are happening in my cart so I can implement fixes for defects that block checkout.
 
 ### Part 3
 
