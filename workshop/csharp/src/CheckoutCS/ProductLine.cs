@@ -44,7 +44,11 @@ namespace CheckoutCS
 
         internal void SetQuantity(int quantity)
         {
-            throw new NotImplementedException();
+            if(quantity < 0)
+            {
+                throw new ArgumentException("Quantity cannont be less than zero.", nameof(quantity));
+            }
+            this.quantity = quantity;
         }
     }
 }

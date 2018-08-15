@@ -150,5 +150,26 @@ namespace CheckoutCS.Tests.Unit
             Assert.Equal(0, cart.ProductLines.First().Quantity);
         }
 
+        [Fact]
+        public void SetProductQuantity_With5_CartContains5()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1).WithQuantity(5));
+            var cmd = A.SetProductQuantity(id1, 5);
+
+            cart.Handle(cmd);
+
+            Assert.Equal(5, cart.ProductLines.First().Quantity);
+        }
+
+        [Fact]
+        public void SetProductQuantity_WithNegative_ThrowsInvalidArgument()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1).WithQuantity(5));
+            var cmd = A.SetProductQuantity(id1, -1);
+
+            Assert.Throws<ArgumentException>(() => cart.Handle(cmd));
+        }
     }
 }

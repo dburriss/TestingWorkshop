@@ -74,5 +74,11 @@ namespace CheckoutCS
                 throw new InvalidOperationException($"Could not decrement product with ID {id} as it was not found in the cart.");
             }
         }
+
+        public void Handle(SetProductQuantity cmd)
+        {
+            var line = _productLines.Find(x => x.ProductId == cmd.Id);
+            line.SetQuantity(cmd.Quantity);
+        }
     }
 }
