@@ -9,6 +9,8 @@ namespace CheckoutCS
         private List<ProductLine> _productLines = new List<ProductLine>();
         public IEnumerable<ProductLine> ProductLines => _productLines;
 
+        public decimal TotalAmount => _productLines.Select(x => (x.ProductAmount * x.Quantity)).Sum();
+
         public Cart(IEnumerable<ProductLine> productLines)
         {
             _productLines = productLines.ToList();

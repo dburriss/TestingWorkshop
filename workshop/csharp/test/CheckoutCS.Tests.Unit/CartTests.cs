@@ -171,5 +171,14 @@ namespace CheckoutCS.Tests.Unit
 
             Assert.Throws<ArgumentException>(() => cart.Handle(cmd));
         }
+
+        [Fact]
+        public void TotalAmount_WithValueOf10_Returns10()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1).WithQuantity(2).WithAmountPerProduct(5));
+
+            Assert.Equal(10, cart.TotalAmount);
+        }
     }
 }

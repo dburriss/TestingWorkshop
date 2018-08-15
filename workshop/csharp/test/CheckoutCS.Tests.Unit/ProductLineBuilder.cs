@@ -43,7 +43,7 @@ namespace CheckoutCS.Tests.Unit
             return this;
         }
 
-        internal ProductLineBuilder WithAmount(decimal amount)
+        internal ProductLineBuilder WithAmountPerProduct(decimal amount)
         {
             this.amount = amount;
             return this;
