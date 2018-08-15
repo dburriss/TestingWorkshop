@@ -6,10 +6,11 @@ namespace CheckoutCS.Tests.Unit
     internal class CartBuilder
     {
         private List<ProductLine> _initInCart = new List<ProductLine>();
+        private ILogger logger = A.Logger;
 
         public Cart Build()
         {
-            var cart =  new Cart(_initInCart);
+            var cart =  new Cart(_initInCart, logger);
             return cart;
         }
 
@@ -23,5 +24,12 @@ namespace CheckoutCS.Tests.Unit
             }
             return this;
         }
+
+        internal CartBuilder UsingLogger(LoggerSpy logger)
+        {
+            this.logger = logger;
+            return this;
+        }
+
     }
 }

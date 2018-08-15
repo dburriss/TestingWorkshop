@@ -7,13 +7,16 @@ namespace CheckoutCS
     public class Cart
     {
         private List<ProductLine> _productLines = new List<ProductLine>();
+        private readonly ILogger logger;
+
         public IEnumerable<ProductLine> ProductLines => _productLines;
 
         public decimal TotalAmount => _productLines.Select(x => (x.ProductAmount * x.Quantity)).Sum();
 
-        public Cart(IEnumerable<ProductLine> productLines)
+        public Cart(IEnumerable<ProductLine> productLines, ILogger logger)
         {
             _productLines = productLines.ToList();
+            this.logger = logger;
         }
 
         public void Handle(AddProduct cmd)
@@ -30,6 +33,7 @@ namespace CheckoutCS
             else
             {
                 _productLines.Add(new ProductLine(cmd.Id, cmd.Code, cmd.Name, cmd.Description, cmd.Amount, 0, cmd.Version));
+                logger.Information($"Product {cmd.Id} added to cart.");
             }
         }
 
@@ -39,6 +43,7 @@ namespace CheckoutCS
             if (cmd.Id == Guid.Empty) throw new ArgumentException($"{nameof(cmd.Id)} must be a valid non-Empty Guid");
 
             _productLines.RemoveAll(x => x.ProductId == cmd.Id);
+            logger.Information($"Product {cmd.Id} removed from cart.");
         }
 
         public void Handle(IncrementProduct cmd)
