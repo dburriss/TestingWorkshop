@@ -11,8 +11,9 @@ namespace CheckoutCS
         private readonly string description;
         private readonly decimal amount;
         private readonly long version;
+        private int quantity;
 
-        public ProductLine(Guid id, string code, string name, string description, decimal amount, long version)
+        public ProductLine(Guid id, string code, string name, string description, decimal amount, int quantity, long version)
         {
             this.id = id;
             this.code = code;
@@ -20,10 +21,30 @@ namespace CheckoutCS
             this.description = description;
             this.amount = amount;
             this.version = version;
+            this.quantity = quantity;
         }
 
         public Guid ProductId => id;
         public string ProductName => name;
         public decimal ProductAmount => amount;
+        public int Quantity => quantity;
+
+        internal void Increment()
+        {
+            quantity = quantity + 1;
+        }
+
+        internal void Decrement()
+        {
+            if(quantity > 0)
+            {
+                quantity = quantity - 1;
+            }            
+        }
+
+        internal void SetQuantity(int quantity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

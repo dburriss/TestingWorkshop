@@ -72,12 +72,83 @@ namespace CheckoutCS.Tests.Unit
         {
             var id1 = Guid.NewGuid();
             var id2 = Guid.NewGuid();
-            Cart cart = A.Cart.Add(A.AddProduct.WithId(id1), A.AddProduct.WithId(id2));
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1), A.ProductLine.WithId(id2));
             RemoveProduct cmd = A.RemoveProduct(id1);
 
             cart.Handle(cmd);
 
             Assert.Equal(id2, cart.ProductLines.First().ProductId);
         }
+
+        [Fact]
+        public void AddProduct_WithExistingProduct_IncrementsProductLine()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1));
+            AddProduct cmd = A.AddProduct.WithId(id1);
+
+            cart.Handle(cmd);
+
+            Assert.Equal(2, cart.ProductLines.First().Quantity);
+        }
+
+        [Fact]
+        public void IncrementProduct_WithExistingProduct_IncrementsProductLine()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1));
+            var cmd = A.IncrementProduct(id1);
+
+            cart.Handle(cmd);
+
+            Assert.Equal(2, cart.ProductLines.First().Quantity);
+        }
+
+        [Fact]
+        public void IncrementProduct_WithNonExistingProduct_ThrowsInvalidOperation()
+        {
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1));
+            var cmd = A.IncrementProduct(id2);
+
+            Assert.Throws<InvalidOperationException>(() => cart.Handle(cmd));
+        }
+
+        [Fact]
+        public void DecrementProduct_WithNonExistingProduct_ThrowsInvalidOperation()
+        {
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1));
+            var cmd = A.DecrementProduct(id2);
+
+            Assert.Throws<InvalidOperationException>(() => cart.Handle(cmd));
+        }
+
+        [Fact]
+        public void DecrementProduct_WithExistingProduct_DecrementsProductLine()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1));
+            var cmd = A.DecrementProduct(id1);
+
+            cart.Handle(cmd);
+
+            Assert.Equal(0, cart.ProductLines.First().Quantity);
+        }
+
+        [Fact]
+        public void DecrementProduct_WithZeroQuantity_DoesNotGoBelowZero()
+        {
+            var id1 = Guid.NewGuid();
+            Cart cart = A.Cart.Containing(A.ProductLine.WithId(id1).WithQuantity(0));
+            var cmd = A.DecrementProduct(id1);
+
+            cart.Handle(cmd);
+
+            Assert.Equal(0, cart.ProductLines.First().Quantity);
+        }
+
     }
 }

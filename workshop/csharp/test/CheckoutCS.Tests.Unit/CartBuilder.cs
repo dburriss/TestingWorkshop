@@ -5,25 +5,21 @@ namespace CheckoutCS.Tests.Unit
 {
     internal class CartBuilder
     {
-        private List<AddProduct> _addToCart = new List<AddProduct>();
+        private List<ProductLine> _initInCart = new List<ProductLine>();
 
         public Cart Build()
         {
-            var cart =  new Cart();
-            foreach (var cmd in _addToCart)
-            {
-                cart.Handle(cmd);
-            }
+            var cart =  new Cart(_initInCart);
             return cart;
         }
 
         public static implicit operator Cart(CartBuilder builder) => builder.Build();
 
-        internal CartBuilder Add(params AddProductBuilder[] addProductBuilders)
+        internal CartBuilder Containing(params ProductLineBuilder[] productLineBuilders)
         {
-            foreach (AddProduct cmd in addProductBuilders)
+            foreach (ProductLine cmd in productLineBuilders)
             {
-                _addToCart.Add(cmd);
+                _initInCart.Add(cmd);
             }
             return this;
         }
