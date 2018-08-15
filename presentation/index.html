@@ -87,7 +87,7 @@ Feature: Free Delivery
 	So I can entice customers to order more
 
 Scenario: Cart valued at greater than EUR 20
-	Given I have 1 items of SMG899
+	Given I have 1 items of SMG899 priced at 1199.95
 	When I check the checkout summary
 	Then the shipping is free
 </code></pre>
@@ -224,24 +224,22 @@ public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 						</ul>
 					</section>
 					<section>
-					<ul>
-						<li>
-							`Feature`: provide a high-level description of a software feature, and to group related scenarios
-						</li>
-						<li>
-							`Scenario`: a concrete example that illustrates a business rule. Consists of one or more steps (Given, When, Then, Examples) 
-						</li>
-						<li>
-							`Given`: describe the initial state of a system 
-						</li>
-						<li>
-							`When`: describe events or actions that occur in or against the system  
-						</li>
-						<li>
-							`Then`: describe the expected outcome of the `When` actions against the system
-						</li>
-					</ul>
+					
+							<b>Feature</b>: <i>provide a high-level description of a software feature, and to group related scenarios</i>
 					</section>
+					<section>
+							<b>Scenario</b>: <i>a concrete example that illustrates a business rule. Consists of one or more steps (Given, When, Then, Examples)</i> 
+					</section>
+					<section>
+						<b>Given</b>: <i>describe the initial state of a system </i>
+					</section>
+					<section>
+						<b>When</b>: <i>describe events or actions that occur in or against the system  </i>
+					</section>
+					<section>
+						<b>Then</b>: <i>describe the expected outcome of the `When` actions against the system</i>
+					</section>
+
 					<section>
 						<h4>Tips for writing Acceptance tests</h4>
 						<ul>
@@ -260,10 +258,10 @@ Feature: Free Delivery
 
 Background: 
 	Given the following products in stock
-		| Code		| BasePrice | Discount	| Name				| Description							|
-		| SMG899	| 1199.95	| 5%		| Samsung Galaxy ML	| The extra mega large phone			|
-		| USB003	| 5.95		| 0%		| USB Cable			| Just what it says in the name			|
-		| BTR002	| 20.00		| 0%		| Power bank		| Feel the power						|
+	| Code		| BasePrice | Discount  | Name              |
+	| SMG899	| 1199.95   | 5%        | Samsung Galaxy ML |
+	| USB003	| 5.95      | 0%        | USB Cable         |
+	| BTR002	| 20.00     | 0%        | Power bank        |
 	And local shipping price is 5 EUR
 </code></pre>
 					</section>
