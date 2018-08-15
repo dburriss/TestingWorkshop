@@ -81,14 +81,15 @@
 					<section>
 							<h4>Acceptance Tests</h4>
 <pre><code class="gherkin hljs">
-Feature: Eating too many cucumbers may not be good for you
+Feature: Free Delivery
+	As a marketing manager 
+	I want the system to offer free delivery on orders above EUR 20 
+	So I can entice customers to order more
 
-Eating too much of anything may not be good for you.
-
-Scenario: Eating a few is no problem
-	Given Alice is hungry 
-	When she eats 3 cucumbers
-	Then she will be full
+Scenario: Cart valued at greater than EUR 20
+	Given I have 1 items of SMG899
+	When I check the checkout summary
+	Then the shipping is free
 </code></pre>
 						</section>
 						<section>
@@ -101,14 +102,11 @@ Scenario: Eating a few is no problem
 [Fact]
 public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 {
-	//arrange
 	Cart cart = A.Cart;
 	var cmd = A.AddProduct;
 
-	//act
 	cart.Handle(cmd);
 
-	//assert
 	Assert.NotEmpty(cart.ProductLines);
 }
 </code></pre>
@@ -200,14 +198,11 @@ public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 [Fact]
 public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 {
-	//arrange
 	Cart cart = A.Cart;
 	var cmd = A.AddProduct;
 
-	//act
 	cart.Handle(cmd);
 
-	//assert
 	Assert.NotEmpty(cart.ProductLines);
 }
 </code></pre>
@@ -229,6 +224,25 @@ public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 						</ul>
 					</section>
 					<section>
+					<ul>
+						<li>
+							`Feature`: provide a high-level description of a software feature, and to group related scenarios
+						</li>
+						<li>
+							`Scenario`: a concrete example that illustrates a business rule. Consists of one or more steps (Given, When, Then, Examples) 
+						</li>
+						<li>
+							`Given`: describe the initial state of a system 
+						</li>
+						<li>
+							`When`: describe events or actions that occur in or against the system  
+						</li>
+						<li>
+							`Then`: describe the expected outcome of the `When` actions against the system
+						</li>
+					</ul>
+					</section>
+					<section>
 						<h4>Tips for writing Acceptance tests</h4>
 						<ul>
 							<li>Discover the scenarios from the users point of view</li>
@@ -239,40 +253,26 @@ public void AddProduct_WithValidCommand_AddsAProductLineToCart()
 					</section>
 					<section>
 <pre><code class="gherkin hljs"></code>
-Feature: Fixed Amount Sell-in Purchase Agreement
+Feature: Free Delivery
+	As a marketing manager 
+	I want the system to offer free delivery on orders above EUR 20 
+	So I can entice customers to order more
 
-Background:
-	Given a fixed amount sell-in Purchase agreement
-	| Name      | Value                             |
-	| Starting  | 2017-01-05                        |
-	| Ending    | 2017-02-25                        |
-	| Type      | FixedAmountPerProductPurchased    |
-	| Status    | Approved                          |
-	| Factor    | 10                                |
-	| Product   | P1                                |
-	| Product   | P2                                |
-	| Product   | P3                                |
+Background: 
+	Given the following products in stock
+		| Code		| BasePrice | Discount	| Name				| Description							|
+		| SMG899	| 1199.95	| 5%		| Samsung Galaxy ML	| The extra mega large phone			|
+		| USB003	| 5.95		| 0%		| USB Cable			| Just what it says in the name			|
+		| BTR002	| 20.00		| 0%		| Power bank		| Feel the power						|
+	And local shipping price is 5 EUR
 </code></pre>
 					</section>
 					<section>
 <pre><code class="gherkin hljs"></code>
-	Scenario: Agreement start date is moved backwards 
-			so more purchase delivery lines are allocated against
-	Given the following purchase delivery lines exist
-	| Purchase Delivery Line Id | Product   | Quantity | Price | Verification date |
-	| PD1                         | P1      | 3        | 100   | 01-01-2017        |
-	| PD2                         | P2      | 6        | 110   | 05-01-2017        |
-	| PD3                         | P3      | 10       | 210   | 05-01-2017        |
-	And existing allocations for the agreement
-	| Purchase Delivery Line Id | Product   | AllocatedValue |
-	| PD2                         | P2      | 60             |
-	| PD3                         | P3      | 100            |
-	When the Purchase agreement start date changes to 2017-01-01
-	And allocations are calculated for the Purchase agreement
-	Then the following purchase delivery lines are allocated against
-	| Purchase Delivery Line Id | Product   | AllocatedValue |
-	| PD1                       | P1        | 30             |
-	And the total allocated value for the Purchase agreement is 190
+Scenario: Cart valued at greater than EUR 20
+	Given I have 1 items of SMG899
+	When I check the checkout summary
+	Then the shipping is free
 </code></pre>
 					</section>
 				</section>
