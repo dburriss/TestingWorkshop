@@ -98,11 +98,19 @@ Scenario: Eating a few is no problem
 						<section>
 							<h4>Unit tests</h4>
 <pre><code class="fsharp hljs">
-[<Fact>]
-let ``toPay returns half on 50% discounted Price`` () =
-  let price = (Price.create 10m (Discount.fromDecimal 50m)) 
-  	      |> Price.toPay
-  test &lt;@ price = 5m @>
+[Fact]
+public void AddProduct_WithValidCommand_AddsAProductLineToCart()
+{
+	//arrange
+	Cart cart = A.Cart;
+	var cmd = A.AddProduct;
+
+	//act
+	cart.Handle(cmd);
+
+	//assert
+	Assert.NotEmpty(cart.ProductLines);
+}
 </code></pre>
 						</section>
 						<section>
@@ -169,10 +177,40 @@ let ``toPay returns half on 50% discounted Price`` () =
 					</section>
 					<section>
 						<h4>Arrange / Act / Assert</h4>
+<pre><code class="fsharp hljs">
+[Fact]
+public void AddProduct_WithValidCommand_AddsAProductLineToCart()
+{
+	//arrange
+	Cart cart = A.Cart;
+	var cmd = A.AddProduct;
+
+	//act
+	cart.Handle(cmd);
+
+	//assert
+	Assert.NotEmpty(cart.ProductLines);
+}
+</code></pre>
 					</section>
 					<section>
 						<h4>Naming</h4>
 						<code>Unit_Scenario_ExpectedResult</code>
+<pre><code class="fsharp hljs">
+[Fact]
+public void AddProduct_WithValidCommand_AddsAProductLineToCart()
+{
+	//arrange
+	Cart cart = A.Cart;
+	var cmd = A.AddProduct;
+
+	//act
+	cart.Handle(cmd);
+
+	//assert
+	Assert.NotEmpty(cart.ProductLines);
+}
+</code></pre>
 					</section>
 					
 				</section>
