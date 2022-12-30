@@ -1,0 +1,18 @@
+name: Scan Repository
+on: workflow_call
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: workshop/js
+      - name: Scan
+        id: vulnerabilities-scan
+        uses: dburriss/impilo-gh-action
+        with:
+          project-name: 'testing-workshop'
+          ignore-config-file: true
+          target-directory: 'workshop/js'
+          scan-vulnerabilities: true
