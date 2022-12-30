@@ -10,7 +10,7 @@ jobs:
           working-directory: workshop/js
       - name: Scan
         id: vulnerabilities-scan
-        uses: dburriss/impilo-gh-action
+        uses: dburriss/impilo-gh-action@master
         with:
           project-name: 'testing-workshop'
           ignore-config-file: true
