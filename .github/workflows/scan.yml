@@ -13,6 +13,4 @@ jobs:
         uses: dburriss/impilo-gh-action@main
         with:
           project-name: 'testing-workshop'
-          ignore-config-file: true
           target-directory: 'workshop/js'
-          scan-vulnerabilities: true
