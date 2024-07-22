@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Api.Controllers;
 
 [ApiController]
-[Route("[controller]/{id:guid}/{version:int}")]
-public class CartController: ControllerBase
+[Route("[controller]/{id:guid}")]
+public class CartsController: ControllerBase
 {
     private readonly ICartService _cartService;
-    private readonly ILogger<CartController> _logger;
+    private readonly ILogger<CartsController> _logger;
     
-    public CartController(ICartService cartService, ILogger<CartController> logger)
+    public CartsController(ICartService cartService, ILogger<CartsController> logger)
     {
         _cartService = cartService;
         _logger = logger;
@@ -21,13 +21,13 @@ public class CartController: ControllerBase
         return await _cartService.GetCart(id);
     }
     
-    [HttpPut("items", Name = "UpdateItem")]
+    [HttpPut("{version}/items", Name = "UpdateItem")]
     public Task<Cart> UpdateItem(Guid id, int version, CartItem item)
     {
         return _cartService.UpdateItem(id, version, item);
     }
     
-    [HttpPut("coupons", Name = "ApplyCoupon")]
+    [HttpPut("{version}/coupons", Name = "ApplyCoupon")]
     public Task<Cart> ApplyCoupon(Guid id, int version, Coupon coupon)
     {
         return _cartService.ApplyCoupon(id, version, coupon);
