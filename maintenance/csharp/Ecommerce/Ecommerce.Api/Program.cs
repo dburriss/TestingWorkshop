@@ -1,3 +1,4 @@
+using Ecommerce.Api.Repositories;
 using Ecommerce.Api.Services;
 
 namespace Ecommerce.Api;
@@ -9,6 +10,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddSingleton<ICartRepository, FakeCartRepository>();
         builder.Services.AddSingleton<ICartService, CartService>();
 
         builder.Services.AddControllers();
