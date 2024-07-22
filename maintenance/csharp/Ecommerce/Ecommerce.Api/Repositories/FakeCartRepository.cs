@@ -4,33 +4,33 @@ namespace Ecommerce.Api.Repositories;
 public class FakeCartRepository : ICartRepository
 {
     private static Dictionary<Guid, Cart> _carts = new();
-    public Task<Cart> GetCart(Guid id)
+    public Task<Cart?> GetCart(Guid id)
     {
-        if (_carts.ContainsKey(id))
+        if (_carts.TryGetValue(id, out var cart))
         {
-            return Task.FromResult(_carts[id]);
+            return Task.FromResult(cart)!;
         }
-        throw new KeyNotFoundException();
+        return Task.FromResult<Cart>(null);
     }
 
-    public Task CreateCart(Cart cart)
+    public Task<Cart> CreateCart(Cart cart)
     {
-        _carts.Add(cart.Id, cart);
-        return Task.CompletedTask;
+        _carts.Add(cart.CustomerId, cart);
+        return Task.FromResult(cart);
     }
 
-    public Task UpdateCart(Cart cart)
+    public Task<Cart> UpdateCart(Cart cart)
     {
-        if (_carts.ContainsKey(cart.Id))
+        if (_carts.ContainsKey(cart.CustomerId))
         {
-            _carts[cart.Id] = cart;
+            _carts[cart.CustomerId] = cart;
         }
         else
         {
-            _carts[cart.Id] = cart;
+            _carts[cart.CustomerId] = cart;
         }
-        
-        return Task.CompletedTask;
+        cart.Version++;
+        return Task.FromResult(cart);
     }
 
     public Task DeleteCart(Guid id)

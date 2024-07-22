@@ -2,22 +2,60 @@ namespace Ecommerce.Api.Services;
 
 public class CartService : ICartService
 {
-    public Task<Cart> GetCart(Guid id, int version = -1)
+    private readonly ICartRepository _cartRepository;
+    private readonly IProductService _productService;
+
+    public CartService(ICartRepository cartRepository, IProductService productService)
     {
-        throw new NotImplementedException();
+        _cartRepository = cartRepository;
+        _productService = productService;
     }
 
-    public Task<Cart> CreateCart(Guid customerId)
+    public Task<Cart> GetCart(Guid customerId, int version = -1)
     {
-        throw new NotImplementedException();
+        return _cartRepository.GetCart(customerId);
     }
 
-    public Task<Cart> UpdateItem(Guid id, int version, CartItem item)
+    public async Task<Cart> CreateCart(Guid customerId)
     {
-        throw new NotImplementedException();
+        var cart = new Cart
+        {
+            Id = Guid.NewGuid(),
+            CustomerId = customerId,
+            CreatedAt = DateTimeOffset.UtcNow,
+            Items = new List<CartItem>(),
+            Coupons = new List<Coupon>(),
+        };
+        return await _cartRepository.CreateCart(cart);
     }
 
-    public Task<Cart> ApplyCoupon(Guid id, int version, Coupon coupon)
+    public async Task<Cart> UpdateItem(Guid customerId, int version, AddCartItem item)
+    {
+        var cart = await _cartRepository.GetCart(customerId);
+        if (cart == null)
+        {
+            cart = new Cart
+            {
+                Id = Guid.NewGuid(),
+                CustomerId = customerId,
+                CreatedAt = DateTimeOffset.UtcNow,
+                Items = new List<CartItem>(),
+                Coupons = new List<Coupon>(),
+            };
+            await _cartRepository.CreateCart(cart);
+        }
+        // this should be enforced by the database
+        if (cart.Version != version)
+        {
+            throw new Exception("Version mismatch");
+        }
+        var product = await _productService.GetProduct(item.ProductId);
+        cart.Items.Add(new CartItem(product.Id, product.Name, product.Price, item.Quantity));
+
+        return await _cartRepository.UpdateCart(cart);
+    }
+
+    public Task<Cart> ApplyCoupon(Guid customerId, int version, Coupon coupon)
     {
         throw new NotImplementedException();
     }

@@ -22,7 +22,7 @@ public class CartsController: ControllerBase
     }
     
     [HttpPut("{version}/items", Name = "UpdateItem")]
-    public Task<Cart> UpdateItem(Guid id, int version, CartItem item)
+    public Task<Cart> UpdateItem(Guid id, int version, AddCartItem item)
     {
         return _cartService.UpdateItem(id, version, item);
     }
