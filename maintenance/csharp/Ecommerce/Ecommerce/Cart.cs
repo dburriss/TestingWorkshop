@@ -9,18 +9,6 @@ public class Cart
     public List<Coupon> Coupons { get; set; }
 }
 
-public class CartItem
-{
-    public Guid Id { get; set; }
-    public Guid CartId { get; set; }
-    public Guid ProductId { get; set; }
-    public uint Quantity { get; set; }
-}
+public record CartItem(Guid Id, Guid CartId, Guid ProductId, uint Quantity);
 
-public class Coupon
-{
-    public Guid Id { get; set; }
-    public Guid CartId { get; set; }
-    public string Code { get; set; }
-    public decimal Discount { get; set; }
-}
+public record Coupon(Guid Id, Guid CartId, string Code, decimal Discount);
