@@ -1,3 +1,5 @@
+using Ecommerce.Api.Services;
+
 namespace Ecommerce.Api;
 
 public class Program
@@ -7,6 +9,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddSingleton<ICartService, CartService>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
