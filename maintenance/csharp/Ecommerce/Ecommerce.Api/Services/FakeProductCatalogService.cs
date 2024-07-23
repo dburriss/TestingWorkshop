@@ -16,18 +16,7 @@ public class FakeProductCatalogService : IProductCatalogService
         { Guid.Parse("00000000-0000-0000-0000-000000000008"), new ProductRef(Guid.Parse("00000000-0000-0000-0000-000000000008"), "Product 8", ProductCategory.Gaming, 800M) },
         { Guid.Parse("00000000-0000-0000-0000-000000000009"), new ProductRef(Guid.Parse("00000000-0000-0000-0000-000000000009"), "Product 9", ProductCategory.Other, 900M) },
     };
-    // Generate Hardcoded Coupons dictionary by code
-    private static readonly Dictionary<string, Coupon> _coupons = new()
-    {
-        // generate random coupons
-        { "10OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "5OFF", 5M, new List<ProductCategory> { ProductCategory.ComputerGoods, ProductCategory.WhiteGoods }) },
-        { "20OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "10OFF", 10M, new List<ProductCategory> { ProductCategory.MobilePhones, ProductCategory.PowerTools }) },
-        { "30OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "15OFF", 150M, new List<ProductCategory> { ProductCategory.HomeAppliances, ProductCategory.AudioVideo }) },
-        { "40OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "20OFF", 200M, new List<ProductCategory> { ProductCategory.Cameras, ProductCategory.Gaming }) },
-        { "50OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "50OFF", 50M, new List<ProductCategory> { ProductCategory.Other }) },
-        // expired
-        { "EXPIRED", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(-7), "EXPIRED", 50M, new List<ProductCategory> { ProductCategory.Other }) },
-    };
+
     private readonly Random _random = new();
     public Task<ProductRef?> GetProduct(Guid productId)
     {
@@ -46,9 +35,37 @@ public class FakeProductCatalogService : IProductCatalogService
             throw new Exception("Random connection error");
         }
     }
+}
 
+public class FakeCouponService: ICouponService
+{
+    private static readonly Dictionary<string, Coupon> _coupons = new()
+    {
+        // generate random coupons
+        { "10OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "5OFF", 5M, new List<ProductCategory> { ProductCategory.ComputerGoods, ProductCategory.WhiteGoods }) },
+        { "20OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "10OFF", 10M, new List<ProductCategory> { ProductCategory.MobilePhones, ProductCategory.PowerTools }) },
+        { "30OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "15OFF", 150M, new List<ProductCategory> { ProductCategory.HomeAppliances, ProductCategory.AudioVideo }) },
+        { "40OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "20OFF", 200M, new List<ProductCategory> { ProductCategory.Cameras, ProductCategory.Gaming }) },
+        { "50OFF", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(7), "50OFF", 50M, new List<ProductCategory> { ProductCategory.Other }) },
+        // expired
+        { "EXPIRED", new Coupon(Guid.NewGuid(), DateTimeOffset.UtcNow.AddDays(-7), "EXPIRED", 50M, new List<ProductCategory> { ProductCategory.Other }) },
+    };
+    private readonly Random _random = new();
     public Task<Coupon?> GetCoupon(string couponCode)
     {
-        throw new NotImplementedException();
+        // add some randomness to the response
+        Jitter();
+        // lookup coupon by code or return null
+        return Task.FromResult(_coupons.GetValueOrDefault(couponCode));
+    }
+    
+    private void Jitter()
+    {
+        var random = _random.Next(0, 1000);
+        Thread.Sleep(random);
+        if(random > 900)
+        {
+            throw new Exception("Random connection error");
+        }
     }
 }
