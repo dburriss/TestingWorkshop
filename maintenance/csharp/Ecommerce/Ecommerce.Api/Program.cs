@@ -10,7 +10,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddTransient<IProductService, FakeProductService>();
+        builder.Services.AddTransient<IProductCatalogService, FakeProductCatalogService>();
         builder.Services.AddTransient<ICartRepository, FakeCartRepository>();
         builder.Services.AddTransient<ICartService, CartService>();
 

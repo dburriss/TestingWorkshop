@@ -3,12 +3,12 @@ namespace Ecommerce.Api.Services;
 public class CartService : ICartService
 {
     private readonly ICartRepository _cartRepository;
-    private readonly IProductService _productService;
+    private readonly IProductCatalogService _productCatalogService;
 
-    public CartService(ICartRepository cartRepository, IProductService productService)
+    public CartService(ICartRepository cartRepository, IProductCatalogService productCatalogService)
     {
         _cartRepository = cartRepository;
-        _productService = productService;
+        _productCatalogService = productCatalogService;
     }
 
     public Task<Cart> GetCart(Guid customerId, int version = -1)
@@ -29,7 +29,7 @@ public class CartService : ICartService
         return await _cartRepository.CreateCart(cart);
     }
 
-    public async Task<Cart> UpdateItem(Guid customerId, int version, AddCartItem item)
+    public async Task<Cart> UpdateItem(Guid customerId, int version, SetCartItem item)
     {
         var cart = await _cartRepository.GetCart(customerId);
         if (cart == null)
@@ -49,14 +49,9 @@ public class CartService : ICartService
         {
             throw new Exception("Version mismatch");
         }
-        var product = await _productService.GetProduct(item.ProductId);
-        cart.Items.Add(new CartItem(product.Id, product.Name, product.Price, item.Quantity));
+        var product = await _productCatalogService.GetProduct(item.ProductId);
+        cart.Items.Add(new CartItem(product!.Id, product.Name, product.Price, item.Quantity));
 
         return await _cartRepository.UpdateCart(cart);
-    }
-
-    public Task<Cart> ApplyCoupon(Guid customerId, int version, Coupon coupon)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -10,11 +10,5 @@ public class Cart
     public decimal Total { get => Items.Sum(i => i.Price);}
     public int Version { get; set; }
 }
-
 public record CartItem(Guid ProductId, string Name, decimal Price, uint Quantity);
-
-public record Coupon(Guid Id, Guid CartId, string Code, decimal Discount);
-
-public record AddCartItem(Guid ProductId, uint Quantity);
-
-public record ProductRef(Guid Id, string Name, decimal Price);
+public record SetCartItem(Guid ProductId, uint Quantity);
