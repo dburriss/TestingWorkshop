@@ -20,8 +20,7 @@ public class GivenACustomer : IClassFixture<WebApplicationFactory<Program>>
     public async Task WhenAddsItem_ThenItemIsInCart()
     {
         var client = _factory.CreateClient();
-        // generate a known product id
-        var productId = Guid.Parse("a0b0e7b4-0b1b-4b3c-8d5e-6f7a8b9c0d1e");
+        var productId = Guid.Parse("00000000-0000-0000-0000-000000000001");
         var item = new SetCartItem(productId, 1);
         var response = await client.PutAsJsonAsync($"carts/{_customerId}/0/items", item);
         response.EnsureSuccessStatusCode();
