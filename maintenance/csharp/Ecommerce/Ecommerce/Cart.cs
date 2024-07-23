@@ -6,7 +6,6 @@ public class Cart
     public Guid CustomerId { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public List<CartItem> Items { get; set; }
-    public List<Coupon> Coupons { get; set; }
     public decimal Total { get => Items.Sum(i => i.Price);}
     public int Version { get; set; }
 }

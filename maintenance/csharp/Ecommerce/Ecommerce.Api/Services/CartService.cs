@@ -24,7 +24,6 @@ public class CartService : ICartService
             CustomerId = customerId,
             CreatedAt = DateTimeOffset.UtcNow,
             Items = new List<CartItem>(),
-            Coupons = new List<Coupon>(),
         };
         return await _cartRepository.CreateCart(cart);
     }
@@ -40,7 +39,6 @@ public class CartService : ICartService
                 CustomerId = customerId,
                 CreatedAt = DateTimeOffset.UtcNow,
                 Items = new List<CartItem>(),
-                Coupons = new List<Coupon>(),
             };
             await _cartRepository.CreateCart(cart);
         }
