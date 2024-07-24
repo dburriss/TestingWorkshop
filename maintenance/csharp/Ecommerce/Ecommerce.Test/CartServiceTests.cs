@@ -21,7 +21,8 @@ public class CartServiceTests
         var productService = Substitute.For<IProductCatalogService>();
         productService.GetProduct(setItem.ProductId)
             .Returns(new ProductRef(setItem.ProductId, "Product 1", ProductCategory.Cameras, 10));
-        var cartService = new CartService(cartRepository, productService);
+        var couponService = Substitute.For<ICouponService>();
+        var cartService = new CartService(cartRepository, productService, couponService);
         var customerId = Guid.NewGuid();
 
         // Act
