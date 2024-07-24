@@ -27,4 +27,9 @@ public class CartsController: ControllerBase
         return _cartService.UpdateItem(id, version, item);
     }
     
+    [HttpPut("{version}/coupons", Name = "ApplyCoupon")]
+    public Task<Cart> ApplyCoupon(Guid id, int version, string couponCode)
+    {
+        return _cartService.ApplyCoupon(id, version, couponCode);
+    }
 }

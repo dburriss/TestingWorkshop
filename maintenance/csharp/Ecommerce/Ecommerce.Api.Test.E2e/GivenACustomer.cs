@@ -13,7 +13,7 @@ public class GivenACustomer : IClassFixture<WebApplicationFactory<Program>>
     public GivenACustomer(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
-        _customerId = Guid.NewGuid();
+        _customerId = Guid.Parse("a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0");
     }
     
     [Fact]
@@ -25,7 +25,7 @@ public class GivenACustomer : IClassFixture<WebApplicationFactory<Program>>
         var response = await client.PutAsJsonAsync($"carts/{_customerId}/0/items", item);
         response.EnsureSuccessStatusCode();
         var cart = await client.GetFromJsonAsync<Cart>($"carts/{_customerId}");
-        Assert.Contains(productId, cart!.Items.Select(i => i.ProductId));
+        Assert.Contains(productId, cart!.Items);
         Assert.Equal(100M, cart.Total);
     }
 }

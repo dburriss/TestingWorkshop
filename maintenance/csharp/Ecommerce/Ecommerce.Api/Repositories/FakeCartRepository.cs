@@ -20,7 +20,8 @@ public class FakeCartRepository : ICartRepository
     }
 
     public Task<Cart> UpdateCart(Cart cart)
-    {
+    {        
+        cart.Version = cart.Version++;
         if (_carts.ContainsKey(cart.CustomerId))
         {
             _carts[cart.CustomerId] = cart;
@@ -29,7 +30,6 @@ public class FakeCartRepository : ICartRepository
         {
             _carts[cart.CustomerId] = cart;
         }
-        cart.Version++;
         return Task.FromResult(cart);
     }
 
