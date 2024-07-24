@@ -9,6 +9,7 @@ public class Cart
     public decimal Total => CalculateTotal();
     public int Version { get; set; }
     public List<Coupon> Coupons { get; set; }
+    public decimal TaxRate { get; set; } = 0;
     
     private decimal CalculateTotal()
     {
@@ -18,7 +19,9 @@ public class Cart
     private decimal ApplyCouponToItem(CartItem item)
     {
         var validCoupons = Coupons.Where(c => c.ExpiresAt >= DateTimeOffset.Now && c.ValidFor.Contains(item.Category)).ToList();
-        return item.Price * (1 - validCoupons.Sum(c => c.Discount) / 100);
+        var price = item.Price * (1 - validCoupons.Sum(c => c.Discount) / 100);
+        price = price * (1 + TaxRate / 100);
+        return price;
     }
 }
 

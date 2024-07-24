@@ -22,7 +22,9 @@ public class CartServiceTests
         productService.GetProduct(setItem.ProductId)
             .Returns(new ProductRef(setItem.ProductId, "Product 1", ProductCategory.Cameras, 10));
         var couponService = Substitute.For<ICouponService>();
-        var cartService = new CartService(cartRepository, productService, couponService);
+        var customerService = Substitute.For<ICustomerService>();
+        var taxService = Substitute.For<ITaxService>();
+        var cartService = new CartService(cartRepository, productService, couponService, customerService, taxService);
         var customerId = Guid.NewGuid();
 
         // Act
@@ -53,7 +55,9 @@ public class CartServiceTests
         productService.GetProduct(setItem.ProductId)
             .Returns(new ProductRef(setItem.ProductId, "Product 1", ProductCategory.Cameras, 10));
         var couponService = Substitute.For<ICouponService>();
-        var cartService = new CartService(cartRepository, productService, couponService);
+        var customerService = Substitute.For<ICustomerService>();
+        var taxService = Substitute.For<ITaxService>();
+        var cartService = new CartService(cartRepository, productService, couponService, customerService, taxService);
         var customerId = Guid.NewGuid();
 
         // Act
@@ -64,5 +68,34 @@ public class CartServiceTests
         Assert.Equal(2u, newCart.Items[productId].Quantity);
     }
     
+    [Fact]
+        public async Task WhenHasTaxRate_ThenTaxRateIsAddedToTotal()
+        {
+            // Arrange
+            var setItem = new SetCartItem(Guid.NewGuid(), 1);
+            var cartRepository = Substitute.For<ICartRepository>();
+            cartRepository.UpdateCart(Arg.Any<Cart>()).Returns(c =>
+            {
+                var newCart = c.Arg<Cart>();
+                newCart.Version = newCart.Version++;
+                return newCart;
+            });
+            var productService = Substitute.For<IProductCatalogService>();
+            productService.GetProduct(setItem.ProductId)
+                .Returns(new ProductRef(setItem.ProductId, "Product 1", ProductCategory.Cameras, 10));
+            var couponService = Substitute.For<ICouponService>();
+            var customerService = Substitute.For<ICustomerService>();
+            var taxService = Substitute.For<ITaxService>();
+            taxService
+                .TaxPercentage(Arg.Any<CustomerRef>())
+                .Returns(_ => 20M);
+            var cartService = new CartService(cartRepository, productService, couponService, customerService, taxService);
+            var customerId = Guid.NewGuid();
     
+            // Act
+            var cart = await cartService.UpdateItem(customerId, 0, setItem);
+    
+            // Assert
+            Assert.Equal(12, cart.Total);
+        }
 }

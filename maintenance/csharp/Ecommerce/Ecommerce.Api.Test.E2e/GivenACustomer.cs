@@ -13,7 +13,7 @@ public class GivenACustomer : IClassFixture<WebApplicationFactory<Program>>
     public GivenACustomer(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
-        _customerId = Guid.NewGuid();
+        _customerId = Guid.Parse("a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0");
     }
     
     [Fact]
