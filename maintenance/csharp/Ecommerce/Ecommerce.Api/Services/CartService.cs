@@ -26,7 +26,7 @@ public class CartService : ICartService
             Id = Guid.NewGuid(),
             CustomerId = customerId,
             CreatedAt = DateTimeOffset.UtcNow,
-            Items = new List<CartItem>(),
+            Items = new(),
         };
         return await _cartRepository.CreateCart(cart);
     }
@@ -41,7 +41,7 @@ public class CartService : ICartService
                 Id = Guid.NewGuid(),
                 CustomerId = customerId,
                 CreatedAt = DateTimeOffset.UtcNow,
-                Items = new List<CartItem>(),
+                Items = new(),
                 Coupons = new()
             };
             await _cartRepository.CreateCart(cart);
@@ -52,8 +52,17 @@ public class CartService : ICartService
             throw new Exception("Version mismatch");
         }
         var product = await _productCatalogService.GetProduct(item.ProductId);
-        cart.Items.Add(new CartItem(product!.Id, product.Name, product.Price, item.Quantity, product.ProductCategory));
-
+        if (product == null)
+        {
+            throw new Exception("Product not found");
+        }
+        if(cart.Items.ContainsKey(item.ProductId))
+        {
+            cart.Items[item.ProductId] = cart.Items[item.ProductId].WithQuantity(cart.Items[item.ProductId].Quantity + item.Quantity);
+            return await _cartRepository.UpdateCart(cart);
+        }
+        
+        cart.Items[item.ProductId] = new CartItem(product!.Id, product.Name, product.Price, item.Quantity, product.ProductCategory);
         return await _cartRepository.UpdateCart(cart);
     }
 

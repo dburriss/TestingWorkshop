@@ -25,7 +25,7 @@ public class GivenACustomer : IClassFixture<WebApplicationFactory<Program>>
         var response = await client.PutAsJsonAsync($"carts/{_customerId}/0/items", item);
         response.EnsureSuccessStatusCode();
         var cart = await client.GetFromJsonAsync<Cart>($"carts/{_customerId}");
-        Assert.Contains(productId, cart!.Items.Select(i => i.ProductId));
+        Assert.Contains(productId, cart!.Items);
         Assert.Equal(100M, cart.Total);
     }
 }

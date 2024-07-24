@@ -10,7 +10,7 @@ public class CartTotalTests
         {
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
-            Items = new List<CartItem>(),
+            Items = new(),
             Version = 0
         };
 
@@ -25,13 +25,14 @@ public class CartTotalTests
     public void WhenSingleItem_ThenTotalPriceIsItemPrice()
     {
         // Arrange
+        var productId = Guid.NewGuid();
         var cart = new Cart
         {
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
-            Items = new List<CartItem>
+            Items = new()
             {
-                new(Guid.NewGuid(), "Product 1", 10, 1, ProductCategory.Cameras)
+                {productId, new(productId, "Product 1", 10, 1, ProductCategory.Cameras)}
             },
             Version = 0,
             Coupons = new()
@@ -48,14 +49,16 @@ public class CartTotalTests
     public void WhenMultipleItems_ThenTotalPriceIsSumOfItemPrices()
     {
         // Arrange
+        var productId = Guid.NewGuid();
+        var productId2 = Guid.NewGuid();
         var cart = new Cart
         {
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
-            Items = new List<CartItem>
+            Items = new()
             {
-                new(Guid.NewGuid(), "Product 1", 10, 1, ProductCategory.Cameras),
-                new(Guid.NewGuid(), "Product 2", 20, 1, ProductCategory.Cameras)
+                {productId, new(productId, "Product 1", 10, 1, ProductCategory.Cameras)},
+                {productId2 ,new(productId2, "Product 2", 20, 1, ProductCategory.Cameras)}
             },
             Version = 0,
             Coupons = new()
@@ -72,13 +75,14 @@ public class CartTotalTests
     public void WhenCartItemHas50PercentCoupon_TotalIsHalf()
     {
         // Arrange
+        var productId = Guid.NewGuid();
         var cart = new Cart
         {
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
-            Items = new List<CartItem>
+            Items = new()
             {
-                new(Guid.NewGuid(), "Product 1", 100, 1, ProductCategory.Cameras),
+                {productId, new(productId, "Product 1", 100, 1, ProductCategory.Cameras)},
             },
             Version = 0,
             Coupons = new List<Coupon>
@@ -97,5 +101,29 @@ public class CartTotalTests
 
         // Assert
         Assert.Equal(50, totalPrice);
+    }
+    
+    [Fact]
+    public void WhenMultipleQuantityOfItem_ThenTotalPriceIsItemPriceMultipliedByQuantiy()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+        var cart = new Cart
+        {
+            CreatedAt = DateTimeOffset.Now,
+            CustomerId = Guid.NewGuid(),
+            Items = new()
+            {
+                {productId, new(productId, "Product 1", 10, 2, ProductCategory.Cameras)}
+            },
+            Version = 0,
+            Coupons = new()
+        };
+
+        // Act
+        var totalPrice = cart.Total;
+
+        // Assert
+        Assert.Equal(20, totalPrice);
     }
 }
