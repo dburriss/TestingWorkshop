@@ -3,7 +3,7 @@ namespace Ecommerce.Api.Services;
 public class FakeTaxService : ITaxService
 {
     private static readonly Random _random = new Random();
-    public Task<decimal> TaxPercentage(CustomerRef customer, ProductCategory productCategory)
+    public Task<decimal> TaxPercentage(CustomerRef customer)
     {
         Jitter();
         if (!customer.IsBusinessCustomer && customer.CountryCode == "US")
