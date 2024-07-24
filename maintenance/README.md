@@ -37,6 +37,8 @@ We have an existing cart implementation which handles adding and removing items,
 1. More unit tests as currently there is only end-to-end tests.
 2. A clean architecture to make the cart more testable.
 
+> Note: For the end-to-end tests, the codebase contains Fake implementations of Services and Repositories that mimic real world implementations. This includes some jitter and random failures to simulate network issues.
+
 ## Instructions
 
 Follow the kata, step by step. Do not read ahead. You are free to do any refactoring that you see fit as you go but try to keep them small. In fact, that is the goal of the kata, to make small changes that will make the code more maintainable, while still adding new features.
@@ -49,14 +51,24 @@ Pay close attention to what breaks as you make changes. A common problem is that
 
 The calculation of the total amount has been identified as a good first piece of behaviour to cover with unit tests, since some changes are coming to the calculation logic in the near future.
 
+Create a new test project and add some unit tests for the total calculation.
+
 ## Step 2
 
-The company is starting to offer coupon codes to customers. Each coupon code has a discount percentage, a minimum amount that the cart must reach to be valid, an expiration date, and categories that the coupon is valid for. The cart should be able to apply a coupon code to only products that it is valid for. Remember that the team wants to increase the amount of behavior that is covered by unit tests.
+The company is starting to offer coupon codes to customers. Each coupon code has a discount percentage, an expiration date, and categories that the coupon is valid for. The cart should be able to apply a coupon code to only products that it is valid for. Remember that the team wants to increase the amount of behavior that is covered by unit tests.
+
+Use the `ICouponService` interface to fetch the coupon information and apply it to the cart.
 
 ## Step 3
 
-A but has been reported where the same item can end up in the cart multiple times. The team discussed that this would be a good opportunity to write a test to confirm the bug and then fix it.
+A bug has been reported where the same item can end up in the cart multiple times. The team discussed that this would be a good opportunity to write a test to confirm the bug and then fix it.
+
+Add a test that confirms the bug and then fix it.
+
+> Note: There may be more than 1 bug ;)
 
 ## Step 4
 
-The company is starting to sell to B2B customers. B2B customers have a VAT tax rate of 20% added to their orders. The tax rate should be fetched from the finance system. Remember the teams desire to increase the amount of behavior that is covered by unit tests.
+The company is starting to sell to B2B customers. B2B customers have a tax rate added to their orders that are country specific. The tax rate should be fetched from the finance system. Remember the teams desire to increase the amount of behavior that is covered by unit tests.
+
+Use the `ICustomerService` interface to find out if the customer is a B2B customer and then use the `IFinanceService` interface to fetch the tax rate.
