@@ -62,7 +62,6 @@ public class CartTests
             {
                 new CartItem(Guid.NewGuid(), "Product 1", 10, 2),
             },
-            Version = 0
         };
 
         // Act
@@ -84,7 +83,6 @@ public class CartTests
             {
                 new CartItem(Guid.NewGuid(), "Product 1", 10.99m, 1)
             },
-            Version = 0
         };
 
         // Act
@@ -101,7 +99,6 @@ public class CartTests
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
             Items = items.ToList(),
-            Version = 0
         };
     }
 
@@ -125,7 +122,6 @@ public class CartBuilder
             CreatedAt = DateTimeOffset.Now,
             CustomerId = Guid.NewGuid(),
             Items = _items,
-            Version = 0
         };
         return cart;
     }

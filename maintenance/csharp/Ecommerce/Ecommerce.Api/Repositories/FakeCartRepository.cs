@@ -29,7 +29,6 @@ public class FakeCartRepository : ICartRepository
         {
             _carts[cart.CustomerId] = cart;
         }
-        cart.Version++;
         return Task.FromResult(cart);
     }
 

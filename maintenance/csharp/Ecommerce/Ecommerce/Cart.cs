@@ -7,7 +7,6 @@ public class Cart
     public DateTimeOffset CreatedAt { get; set; }
     public List<CartItem> Items { get; set; }
     public decimal Total { get => Items.Sum(i => i.Price * i.Quantity);}
-    public int Version { get; set; }
 }
 public record CartItem(Guid ProductId, string Name, decimal Price, uint Quantity);
 public record SetCartItem(Guid ProductId, uint Quantity);

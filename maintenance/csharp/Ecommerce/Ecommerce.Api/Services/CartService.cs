@@ -28,7 +28,7 @@ public class CartService : ICartService
         return await _cartRepository.CreateCart(cart);
     }
 
-    public async Task<Cart> UpdateItem(Guid customerId, int version, SetCartItem item)
+    public async Task<Cart> UpdateItem(Guid customerId, SetCartItem item)
     {
         var cart = await _cartRepository.GetCart(customerId);
         if (cart == null)
@@ -42,11 +42,7 @@ public class CartService : ICartService
             };
             await _cartRepository.CreateCart(cart);
         }
-        // this should be enforced by the database
-        if (cart.Version != version)
-        {
-            throw new Exception("Version mismatch");
-        }
+
         var product = await _productCatalogService.GetProduct(item.ProductId);
         cart.Items.Add(new CartItem(product!.Id, product.Name, product.Price, item.Quantity));
 
